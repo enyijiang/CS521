@@ -3,8 +3,8 @@ import torch.nn as nn
 
 
 # fix seed so that random initialization always performs the same 
-torch.manual_seed(1)
-# torch.manual_seed(13)
+# torch.manual_seed(1)
+torch.manual_seed(13)
 
 
 # create the model N as described in the question
@@ -46,4 +46,5 @@ new_class = N(adv_x).argmax(dim=1).item()
 print("New Class: ", new_class)
 assert(new_class == t)
 # it is not enough that adv_x is classified as t. We also need to make sure it is 'close' to the original x. 
+print(torch.norm((x-adv_x),  p=float('inf')).data)
 assert( torch.norm((x-adv_x), p=float('inf')) <= epsReal)
