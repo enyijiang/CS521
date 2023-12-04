@@ -1,0 +1,3 @@
+[submodule "dl2"]
+	path = dl2
+	url = https://github.com/eth-sri/dl2

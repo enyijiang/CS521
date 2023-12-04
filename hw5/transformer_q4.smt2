@@ -13,12 +13,12 @@
 
 (define-fun Tf_lower ((l Real) (u Real)) Real
 ; Your code here
-(ite (> l 0) 0 (* 2 l)) 
+(ite (<= l 0) (+ l l) 0) 
 )
 
 (define-fun Tf_upper ((l Real) (u Real)) Real
 ; Your code here
-(ite (> u 0) 0 (* 2 u))  
+(ite (<= u 0) (+ u u) 0)  
 )
 
 

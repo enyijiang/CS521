@@ -1,0 +1,46 @@
+; The printed output for this example should be equivalent to:
+; (
+;   (define-fun max ((x Int) (y Int)) Int (ite (<= x y) y x))
+;   (define-fun min ((x Int) (y Int)) Int (ite (<= x y) x y))
+; )
+
+(set-logic NIA)
+
+(define-fun max ((x Int) (y Int)) Int (ite (<= x y) y x))
+(define-fun min ((x Int) (y Int)) Int (ite (<= x y) x y))
+
+(synth-fun Tf_upper ((l Int) (u Int)) Int
+((Start Int) (StartBool Bool))
+  ((Start Int (0 1 l u
+               (+ Start Start)
+               (- Start Start)
+               (* Start Start)
+               (* (* Start Start) Start)
+               (ite StartBool Start Start)))
+   (StartBool Bool ((and StartBool StartBool)
+                    (not StartBool)
+                    (> Start Start)
+                    (<= Start Start)))))
+
+(synth-fun Tf_lower ((l Int) (u Int)) Int
+  ((Start Int) (StartBool Bool))
+  ((Start Int (0 1 l u
+               (+ Start Start)
+               (- Start Start)
+               (* Start Start)
+               (* (* Start Start) Start)
+               (ite StartBool Start Start)))
+   (StartBool Bool ((and StartBool StartBool)
+                    (not StartBool)
+                    (> Start Start)
+                    (<= Start Start)))))
+
+
+(declare-var l Int)
+(declare-var u Int)
+
+(constraint (ite (<= u 1) (= (Tf_upper l u) (max (* u u) (* l l))) (= (Tf_upper l u) (max (* l l) (* u (* u u))))))
+; (constraint (ite (<= u 0) (= (Tf_lower l u) (* u u)) (ite (<= l 0) (= (Tf_lower l u) 0) (ite (<= l 1) (= (Tf_lower l u) (* l l)) (= (Tf_lower l u) (* l (* l l)))))))
+
+
+(check-synth)
