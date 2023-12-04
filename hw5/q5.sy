@@ -40,7 +40,7 @@
 (declare-var u Int)
 
 (constraint (ite (<= u 1) (= (Tf_upper l u) (max (* u u) (* l l))) (= (Tf_upper l u) (max (* l l) (* u (* u u))))))
-; (constraint (ite (<= u 0) (= (Tf_lower l u) (* u u)) (ite (<= l 0) (= (Tf_lower l u) 0) (ite (<= l 1) (= (Tf_lower l u) (* l l)) (= (Tf_lower l u) (* l (* l l)))))))
+(constraint (ite (> l 1) (= (Tf_lower l u)(* l (* l l))) (ite (> l 0) (= (Tf_lower l u) (* l l)) (ite (> u 0) (= (Tf_lower l u) 0) (= (Tf_lower l u)(* u u))))))
 
 
 (check-synth)

@@ -18,7 +18,7 @@
 
 (define-fun Tf_upper ((l Real) (u Real)) Real
 ; Your code here
-(ite (> l 0) (ite (> u 1) (* u (* u u)) (* u u)) (ite (< u 0) (* l l) (ite (> u 1) (max (* l l) (* u (* u u))) (max (* l l) (* u u)))))
+(ite (<= u 1) (max (* u u) (* l l)) (max (* l l) (* u (* u u))))
 )
 
 
