@@ -9,6 +9,7 @@ def calculate_outputs_and_gradients(inputs, model, target_label_idx, cuda=False)
     gradients = []
     for input in inputs:
         input = pre_processing(input, cuda)
+        
         output = model(input)
         output = F.softmax(output, dim=1)
         if target_label_idx is None:
@@ -34,6 +35,7 @@ def pre_processing(obs, cuda):
     obs = np.transpose(obs, (2, 0, 1))
     obs = np.expand_dims(obs, 0)
     obs = np.array(obs)
+
     if cuda:
         torch_device = torch.device('cuda:0')
     else:
@@ -43,11 +45,16 @@ def pre_processing(obs, cuda):
 
 # generate the entire images
 def generate_entrie_images(img_origin, img_grad, img_grad_overlay, img_integrad, img_integrad_overlay):
+    # img_origin = cv2.resize(img_origin, (224, 224))
+    # img_grad = cv2.resize(img_grad, (224, 224))
+    # img_grad_overlay = cv2.resize(img_grad_overlay, (224, 224))
+    # img_integrad = cv2.resize(img_integrad, (224, 224))
+    # img_integrad_overlay = cv2.resize(img_integrad_overlay, (224, 224))
     blank = np.ones((img_grad.shape[0], 10, 3), dtype=np.uint8) * 255
     blank_hor = np.ones((10, 20 + img_grad.shape[0] * 3, 3), dtype=np.uint8) * 255
     upper = np.concatenate([img_origin[:, :, (2, 1, 0)], blank, img_grad_overlay, blank, img_grad], 1)
     down = np.concatenate([img_origin[:, :, (2, 1, 0)], blank, img_integrad_overlay, blank, img_integrad], 1)
     total = np.concatenate([upper, blank_hor, down], 0)
-    total = cv2.resize(total, (550, 364))
+    # total = cv2.resize(total, (550, 364))
 
     return total
